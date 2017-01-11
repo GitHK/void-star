@@ -4,12 +4,14 @@ from distutils.core import setup
 setup(
     name='voidstar',
     author='Andrei Neagu',
-    version='0.0.1',
+    version='0.0.2',
     description='aiohttp utils',
     author_email='neaguandrei@telematicainformatica.it',
-    packages=['void-star'],
+    packages=['voidstar'],
     keywords=[],
+    url='https://github.com/GitHK/voidstar.git',
     install_requires=[
         "aiohttp"
-    ]
+    ],
+    classifiers=[]
 )
