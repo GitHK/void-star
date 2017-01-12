@@ -1,6 +1,7 @@
 from aiohttp import web
 import traceback
 
+
 def make_response(status, payload, error):
     data = dict(status=status, payload=payload, error=error)
     return web.json_response(data=data, status=status)
@@ -24,13 +25,16 @@ async def json_middleware(app, handler):
                 return make_response(status=ex.status, payload=None, error=str(ex))
             raise
         except Exception as ex:
-            traceback.print_exc()
+            if app['debug']:
+                traceback.print_exc()
             error_message = "Internal serve error '%s: %s'" % (type(ex).__name__, str(ex))
             return make_response(status=500, payload=None, error=error_message)
 
     return middleware_handler
 
 
-def make_app(middlewares=None):
-    return web.Application(
+def make_app(middlewares=None, debug=True):
+    app = web.Application(
         middlewares=[json_middleware] if middlewares is None else middlewares.append(json_middleware))
+    app['debug'] = debug
+    return app
