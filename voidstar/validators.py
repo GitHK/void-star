@@ -21,11 +21,6 @@ class ValidationError(Exception):
     pass
 
 
-class Validator(BaseValidator):
-    def to_validate(self, value):
-        return value
-
-
 class StringIntValidator(BaseValidator):
     def __init__(self, max=None, min=None, **kwargs):
         super().__init__(**kwargs)
@@ -79,21 +74,3 @@ def validate(parameters, validation_schema):
         check_single_validator(parameters, parameter_name, validator, matches)
 
     return dict(matches)
-
-
-if __name__ == "__main__":
-    params = {
-        'id': '123',
-        'tag': '198ye oe lht94pyit ',
-        'tagtag': 'adskjahjk adkhhkd ksd',
-        'tag1': 'askdsakjkhsdjkhasd hadskadksahk ',
-        'tag11111111': 'a'
-    }
-
-    validation_schema = {
-        'id': StringIntValidator(required=True, not_empty=True, max=200, min=20),
-        '^tag[0-9]*$': Validator(required=True, not_empty=True)
-    }
-
-    values = validate(params, validation_schema)
-    print(values)
