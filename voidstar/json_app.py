@@ -1,5 +1,5 @@
 from aiohttp import web
-
+import traceback
 
 def make_response(status, payload, error):
     data = dict(status=status, payload=payload, error=error)
@@ -24,6 +24,7 @@ async def json_middleware(app, handler):
                 return make_response(status=ex.status, payload=None, error=str(ex))
             raise
         except Exception as ex:
+            traceback.print_exc()
             error_message = "Internal serve error '%s: %s'" % (type(ex).__name__, str(ex))
             return make_response(status=500, payload=None, error=error_message)
 
